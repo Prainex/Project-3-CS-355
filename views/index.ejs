@@ -1,11 +1,87 @@
+<!-- Not my page -->
+
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Irish+Grover&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+        
+        <style>
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: #ADB3D2;
+                font-family: "Irish Grover", serif;
+                font-weight: 400;
+                font-style: normal;
+            }
+            div {
+                
+                padding: 1%;
+                width: 20%;
+            }
+            h3 {
+                text-align: center;
+            }
+            input {
+                margin-top: 10px;
+                width: 100%;
+            }
+            #submitButton {
+                width: 100px;
+                align-content: right;
+            }
+
+            a {
+                /* border: 1px solid #8f94ad; */
+                padding: 10PX 50px;
+                
+                border-radius: 30%;
+                width: 100% ;
+                background-color: #CCD2AD;
+                text-decoration: none;
+                color: black;
+            }
+            a:hover{
+                background-color: #8f94ad;
+
+            }
+            button{
+                border: 1px solid #8f94ad;
+                padding: 10px 40px;
+                border-radius:25% ;
+                /* width: 15px; */
+                background-color: #CCD2AD;
+            }
+            .links{
+                margin: 0;
+                display: flex;
+                width: 100%;
+                justify-content: center;
+                align-items: center;
+                gap: 20px;
+                font-family: "Irish Grover", serif;
+                font-weight: 400;
+                font-style: normal;
+            }
+            
+        </style>
+    </head>
+    <body>
+        <div class="head-box">
+            <h1>TRIVIAL QUIZ</h1>
+            <div class="links">
+                <a href="/auth/login">SIGN IN</a> or 
+                <a href="/auth/signup">SIGN UP</a>
+                
+            </div>
+                
+            
+        </div>
+    </body>
 </html>

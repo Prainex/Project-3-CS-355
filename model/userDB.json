@@ -1,0 +1,44 @@
+[
+  {
+    "username": "JohnTravolta",
+    "password": "123456",
+    "name": "John Travolta",
+    "highest_score": 67
+  },
+  {
+    "username": "JohnRavolta",
+    "password": "wowie",
+    "name": "woohoo",
+    "highest_score": 78
+  },
+  {
+    "name": "as",
+    "username": "as",
+    "password": "as",
+    "highest_score": 0
+  },
+  {
+    "name": "123",
+    "username": "123",
+    "password": "123",
+    "highest_score": 0
+  },
+  {
+    "name": "sdfew",
+    "username": "eafwef",
+    "password": "wf23q4f",
+    "highest_score": 0
+  },
+  {
+    "name": "12",
+    "username": "12",
+    "password": "12",
+    "highest_score": 0
+  },
+  {
+    "name": "34",
+    "username": "34",
+    "password": "34",
+    "highest_score": 0
+  }
+]
