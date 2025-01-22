@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sign Up</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Irish+Grover&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="/stylesheets/signup.css">
+    </head>
+    <body>
+        <div class="container">
+            <form method="POST" action="/signup" class="signup_form">
+                <div class="form_header">
+                    <h1>Sign Up</h1>
+                    <p>Already have an account? <a href="/login">Sign in</a></p>
+                </div>
+
+                <label for="name">Name</label>
+                <input id="name" type="text" name="name" required>
+
+                <% if (errorMessage) { %>
+                    <p style="color: red;"><%= errorMessage %></p>
+                <% } %>
+                
+
+                <label for="username">Username</label>
+                <input id="username" type="text" name="username" required>
+
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password" required>
+
+                <input type="submit" value="Sign Up">
+                <p class="footnote">
+                    By signing up to create an account, you are accepting our terms of service and privacy policy.
+                </p>
+            </form>
+        </div>
+    </body>
+</html>
+

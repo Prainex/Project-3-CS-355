@@ -1,0 +1,86 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Example</title>
+  <!-- GOOGLE FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Irish+Grover&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/stylesheets/userOptions.css">
+</head>
+
+<body>
+  <div class="container-1">
+    <h1>Welcome  <% if (title) { %>
+        <%= title %>
+        <% } %></h1>
+  </div>
+
+  <div class="rules">
+    <h2>Instructions:</h2>
+    <br>
+    <p>1. <b>Select the number of questions:</b><br>
+    You must choose between 3 to 20 questions.</p>
+    <br>
+
+    <p>2. <b>Set the time limit per question:</b><br>
+    Choose a time limit between 3 and 50 seconds for each question.</p>
+    <br>
+  </div>
+
+  <!-- It takes a min of 3 question and max of 20 question. It takes min of 3 second and 50 max second -->
+  <form method="post" action="/login/userOptions">
+    <label for="num-questions">How many questions</label>
+    <input type="number" id="num-questions" name="num_questions" min="3" max="20" placeholder="Enter between 3 to 20" required>
+
+    <label for="time-limit">Set time limit for each question (in seconds)</label>
+    <input type="number" id="time-limit" name="time_limit" min="3" max="50" placeholder="Enter time between 3 and 50" required>
+
+    <div class="question-type">
+      <label for="choice">Choose a category:</label>
+      <select name="categoryOptions" id="option-box1">
+      </select>
+    </div>
+
+    <div class="difficulty-type">
+      <label for="choice">Choose a difficulty:</label>
+      <select name="difficultyOptions" id="option-box2"></select>
+    </div>
+
+    <input type="submit" value="Submit">
+  </form>
+
+  <script>
+    const categories = <%- JSON.stringify(categories) %>;
+    const difficulties = <%- JSON.stringify(difficulties) %>;
+    const categoryId = <%- JSON.stringify(categoryId) %>;
+
+    let dropdown1 = document.getElementById("option-box1");
+    dropdown1.innerHTML = "";
+
+    let dropdown2 = document.getElementById("option-box2");
+    dropdown2.innerHTML = "";
+
+
+    categories.forEach((item, index) => {
+        let option = document.createElement('option');
+        option.value = categoryId[index];
+        option.textContent = item;
+        dropdown1.appendChild(option);
+    });
+
+    difficulties.forEach((item) =>{
+      let option = document.createElement('option');
+      option.value = item.toLowerCase();
+      option.textContent = item;
+      dropdown2.appendChild(option);
+    });
+
+  </script>
+  
+</body>
+</html>
