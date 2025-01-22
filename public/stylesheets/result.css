@@ -1,127 +1,79 @@
 body {
-    margin: 0;
-    padding: 0;
-    color: #333;
-    background-color: #ADB3D2;
-    font-family: "Irish Grover", serif;
-    font-weight: 400;
-    font-style: normal;
-  }
-  
-  .results-container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  h1 {
-    text-align: center;
-    color: #CCD2AD;
-    font-size: 36px;
-    margin-bottom: 20px;
-  }
-  
-  .score {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  .correct{
-    color: #CCD2AD;
-  }
-  
-  h2, h3 {
-    margin: 5px 0;
-  }
-  
-  .question-result {
-    margin-bottom: 20px;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 5px;
-  }
-  
-  .question-result h3 {
-    font-size: 18px;
-    color: #333;
-  }
-  
-  .question-result p {
-    font-size: 16px;
-    margin: 5px 0;
-  }
-  
-  .question-result hr {
-    margin-top: 10px;
-    border-top: 1px solid #ddd;
-  }
-  
-  .final-score {
-    text-align: center;
-    margin-top: 40px;
-  }
-  
-  button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 18px;
-    border-radius: 5px;
-    cursor: pointer;
-    text-transform: uppercase;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
-  .final-score > a {
-    text-decoration: none;
-    background-color: orangered;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    display: inline-block;
-    transition: background-color 0.3s, transform 0.2s;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  background-color: #ADB3D2;
+  font-family: "Irish Grover", serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
-.final-score > a:hover {
-    background-color: darkorange;
-    transform: scale(1.05); /* Slight scale effect on hover */
+.results-container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.final-score > a:active {
-    background-color: darkred;
+h1 {
+  text-align: center;
+  color: #CCD2AD;
+  font-size: 36px;
+  margin-bottom: 20px;
 }
 
-.leaderboard > input {
-    text-decoration: none;
-    background-color: #007bff;
-    color: white;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-    display: inline-block;
-    box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3);
-    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+.score {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.correct{
+  color: #CCD2AD;
 }
 
-.leaderboard > input:hover {
-    background-color: #0056b3;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 12px rgba(0, 123, 255, 0.4);
+h2, h3 {
+  margin: 5px 0;
 }
 
-.leaderboard > input:active {
-    background-color: #004085;
-    transform: translateY(1px);
-    box-shadow: none;
+.question-result {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+.question-result h3 {
+  font-size: 18px;
+  color: #333;
+}
+
+.question-result p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.question-result hr {
+  margin-top: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.final-score {
+  text-align: center;
+  margin-top: 40px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+button:hover {
+  background-color: #45a049;
 }
