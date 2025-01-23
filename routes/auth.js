@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const fs = require("fs");
 const userDBFileName = "./model/userDB.json";
+const loggedUser = './model/loggedUser.json';
 const axios = require('axios');
 
 
@@ -15,6 +16,20 @@ function writeUserDB(users){
     fs.writeFileSync(userDBFileName, data, "utf-8");
 }
 
+function setLoggedUser(user){
+    let data = JSON.stringify(user, null, 2);
+    fs.writeFileSync(loggedUser, data, "utf-8");
+}
+
+
+function getLoggedUser(){
+    let data = fs.readFileSync(loggedUser, "utf-8");
+    return JSON.parse(data);
+}
+
+function deleteLoggedUser(){
+    fs.writeFileSync(loggedUser, JSON.stringify({}, null, 2), "utf-8");
+}
 
 router.get('/login', function(req, res) {
     res.render('login', { errorMessage: null });
@@ -23,6 +38,30 @@ router.get('/login', function(req, res) {
 
 router.get('/signup', function(req, res) {
     res.render('signup', { errorMessage: null });
+});
+
+router.post("/login/submit", async (req, res) => {
+    const {username, password} = req.body;
+    const users = readUserDB();
+    let flag = false;
+    let currentUser;
+
+    users.forEach((item) => {
+        if (item.username === username && item.password === password){
+            flag = true;
+            currentUser = item;
+        }
+    });
+
+    if(flag){
+        deleteLoggedUser();
+        setLoggedUser(currentUser);
+        res.render('userProfile');
+    }
+
+    else{
+        res.render('login', {errorMessage: "Invalid username or password"});
+    }
 });
 
 async function getCategories(){
@@ -41,28 +80,22 @@ async function getCategories(){
     catch(error){
       console.error("Error fetching categories: ", error.message);
     }
-  }
+}
 
 
-router.post("/login/submit", async (req, res) => {
-    const {username, password} = req.body;
-    const users = readUserDB();
-    let flag = false;
-    let fullName;
+// Alyss, this is your page, i moved the api call here because they wouldn't let me write to the database 
+// if i made an api call with async function. If you have issues with this, then keep the previous format of the project
+// and try to find a way of keeping track of the current user. 
+router.post("/userProfile", async (req,res) => {
 
-    users.forEach((item) => {
-        if (item.username === username && item.password === password){
-            flag = true;
-            fullName = item.name;
-        }
-    });
+    let currentlyLoggedUser = getLoggedUser();
+    console.log(currentlyLoggedUser);
 
-    if(flag){
         try{
             let[categoryOptions, categoryId] = await getCategories();
             let difficultyOptions = ["Easy", "Medium", "Hard"];
             res.render('userOptions', {
-              title: fullName,
+              title: currentlyLoggedUser.name,
               categories: categoryOptions,
               difficulties: difficultyOptions,
               categoryId: categoryId
@@ -71,12 +104,7 @@ router.post("/login/submit", async (req, res) => {
         catch(e){
             console.error(e);
         }
-    }
-    else{
-        res.render('login', {errorMessage: "Invalid username or password"});
-    }
-
-});
+})
 
 
 router.post("/signup/submit", (req, res) => {
@@ -164,8 +192,5 @@ router.post('/login/submit/userOptions/quiz', (req, res) => {
         userResponse: JSON.parse(userResponse)
     });
 });
-
-
-
 
 module.exports = router;
