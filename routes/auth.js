@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const fs = require("fs");
 const userDBFileName = "./model/userDB.json";
+const { getCollection } = require('../model/db');
 const axios = require('axios');
 
 
@@ -46,6 +47,15 @@ async function getCategories(){
 
 router.post("/login/submit", async (req, res) => {
     const {username, password} = req.body;
+    const userCollection = getCollection('users');
+    if (userCollection.find(username) === username){
+        console.log(true);
+    }
+    else{
+        console.log(false);
+    }
+    console.log(req.body);
+
     const users = readUserDB();
     let flag = false;
     let fullName;
@@ -80,9 +90,18 @@ router.post("/login/submit", async (req, res) => {
 
 
 router.post("/signup/submit", (req, res) => {
+    const userCollection = getCollection('users');
+
     let userDB = readUserDB();
     let flag = false;
     const { name, username, password} = req.body;
+
+    try{
+        await userCollection.insertOne(name, username, password, highest_score: 0);
+    }
+    catch (e) {
+
+    }
 
     for (let user of userDB){
         if(user.username === username){
