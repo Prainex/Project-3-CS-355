@@ -39,6 +39,33 @@
     "name": "34",
     "username": "34",
     "password": "34",
-    "highest_score": 0
+    "highest_score": 35,
+    "games" :[
+      {
+        "game": 1,
+        "score": 11
+      },
+      {
+        "game": 2,
+        "score": 35
+      }
+    ]
+  },
+  {
+    "name": "alyssa",
+    "username": "ac",
+    "password": "ac",
+    "highest_score": 30,
+    "games" :[
+      {
+        "game": 1,
+        "score": 10
+      },
+      {
+        "game": 2,
+        "score": 30
+      }
+    ]
+    
   }
 ]

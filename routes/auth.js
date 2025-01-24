@@ -3,6 +3,7 @@ var router = express.Router();
 const fs = require("fs");
 const userDBFileName = "./model/userDB.json";
 const axios = require('axios');
+var activeUser
 
 
 function readUserDB() {
@@ -47,35 +48,42 @@ async function getCategories(){
 router.post("/login/submit", async (req, res) => {
     const {username, password} = req.body;
     const users = readUserDB();
+
+    
+
     let flag = false;
     let fullName;
 
+    //finding user
     users.forEach((item) => {
         if (item.username === username && item.password === password){
             flag = true;
             fullName = item.name;
+            activeUser = item;
+            
         }
     });
 
-    if(flag){
-        try{
-            let[categoryOptions, categoryId] = await getCategories();
-            let difficultyOptions = ["Easy", "Medium", "Hard"];
-            res.render('userOptions', {
-              title: fullName,
-              categories: categoryOptions,
-              difficulties: difficultyOptions,
-              categoryId: categoryId
-            });
-        }
-        catch(e){
-            console.error(e);
-        }
-    }
-    else{
-        res.render('login', {errorMessage: "Invalid username or password"});
-    }
 
+    console.log("The active user: ", activeUser);
+    console.log("\n\nLOGIN SUBMIT This is the current highest score: ", activeUser.highest_score);
+
+//if user is found send to home page with user data
+    if(flag){
+        let username = activeUser.username
+        let highScore = activeUser.highest_score;
+        let games = [];
+        games = activeUser.games;
+        res.render('home', {
+            title: fullName,
+            username:username,
+            highScore: highScore,
+            games,
+        });
+    }else res.render('login', {errorMessage: "Invalid username or password"});
+    
+
+    
 });
 
 
@@ -83,6 +91,7 @@ router.post("/signup/submit", (req, res) => {
     let userDB = readUserDB();
     let flag = false;
     const { name, username, password} = req.body;
+
 
     for (let user of userDB){
         if(user.username === username){
@@ -139,30 +148,54 @@ function createQuestionObj(data) {
     return questions;
   }
   
-
+//makes the api calls to get question categories and other quiz options
 router.post("/login/submit/userOptions", async (req, res) => {
+    
+
     const data = {
         questionAmount: req.body.num_questions,
         timeLimit: req.body.time_limit,
         categories: req.body.categoryOptions,
-        difficulty: req.body.difficultyOptions
     }
     let apiData = await fetchApiData(data.questionAmount, data.categories, data.difficulty);
     let selectedQuestion = createQuestionObj(apiData);
     console.log(selectedQuestion);
-    res.render("quiz", {questions: selectedQuestion, time_limit: data.timeLimit});
+    res.render("quiz", 
+        {
+            questions: selectedQuestion, 
+            time_limit: data.timeLimit,
+            activeUser
+        });
+        console.log("\n\nQUIZ OPTIONS: This is the current highest score: ", activeUser.highest_score);
 });
 
 
 // This will show the result page
 router.post('/login/submit/userOptions/quiz', (req, res) => {
 
-    const { questions, answerKey, userResponse } = req.body;
-    res.render('results', { 
-        questions: JSON.parse(questions), 
-        answers: JSON.parse(answerKey), 
-        userResponse: JSON.parse(userResponse)
-    });
+    const { questions, answerKey, userResponse} = req.body;
+    console.log("\n\n RESULTSSS : This is the current highest score: ", activeUser.highest_score);
+
+
+    res.render('results', 
+        { 
+            questions: JSON.parse(questions), 
+            answers: JSON.parse(answerKey), 
+            userResponse: JSON.parse(userResponse),
+            userScore: activeUser.highestscore
+        }
+    );
+});
+
+
+router.get('/home', async function(req, res) {
+    res.render('home');
+
+});
+
+
+router.get('/userOptions', function(req, res) {
+    res.render('userOptions');
 });
 
 

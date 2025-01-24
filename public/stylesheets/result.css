@@ -11,7 +11,7 @@ body {
 .results-container {
   width: 80%;
   margin: 0 auto;
-  margin-top: 30px;
+  margin-top: 60px;
   padding: 20px;
   background-color: white;
   border-radius: 10px;
@@ -77,4 +77,16 @@ button {
 
 button:hover {
   background-color: #45a049;
+}
+
+.user {
+  display: flex;
+  justify-content: end;
+  margin: 10px;
+}
+
+
+.user img{
+  width: 30px;
+  height: 20px;
 }
