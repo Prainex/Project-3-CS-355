@@ -45,78 +45,69 @@ async function getCategories(){
   }
 
 
-router.post("/login/submit", async (req, res) => {
-    const {username, password} = req.body;
-    const userCollection = getCollection('users');
-    if (userCollection.find(username) === username){
-        console.log(true);
-    }
-    else{
-        console.log(false);
-    }
-    console.log(req.body);
+  router.post("/login/submit", async (req, res) => {
+    const { username, password } = req.body;
 
-    const users = readUserDB();
+    const users = readUserDB(); 
+    const userCollection = getCollection('users'); 
+
     let flag = false;
     let fullName;
 
+    // Check in the JSON file
     users.forEach((item) => {
-        if (item.username === username && item.password === password){
+        if (item.username === username && item.password === password) {
             flag = true;
             fullName = item.name;
         }
     });
 
-    if(flag){
-        try{
-            let[categoryOptions, categoryId] = await getCategories();
-            let difficultyOptions = ["Easy", "Medium", "Hard"];
-            res.render('userOptions', {
-              title: fullName,
-              categories: categoryOptions,
-              difficulties: difficultyOptions,
-              categoryId: categoryId
-            });
+    if (!flag) {
+        try {
+            const user = await userCollection.findOne({ username, password });
+            if (user) {
+                flag = true;
+                fullName = user.name;
+            }
+        } catch (e) {
+            console.error("Error accessing MongoDB:", e);
         }
-        catch(e){
-            console.error(e);
-        }
-    }
-    else{
-        res.render('login', {errorMessage: "Invalid username or password"});
     }
 
+    if (flag) {
+        try {
+            const [categoryOptions, categoryId] = await getCategories();
+            const difficultyOptions = ["Easy", "Medium", "Hard"];
+            res.render('userOptions', {
+                title: fullName,
+                categories: categoryOptions,
+                difficulties: difficultyOptions,
+                categoryId: categoryId
+            });
+        } catch (e) {
+            console.error("Error fetching categories:", e);
+            res.status(500).send("An error occurred while loading user options.");
+        }
+    } else {
+        res.render('login', { errorMessage: "Invalid username or password" });
+    }
 });
 
 
-router.post("/signup/submit", (req, res) => {
+router.post("/signup/submit", async (req, res) => {
     const userCollection = getCollection('users');
+    const { name, username, password } = req.body;
 
-    let userDB = readUserDB();
-    let flag = false;
-    const { name, username, password} = req.body;
-
-    try{
-        await userCollection.insertOne(name, username, password, highest_score: 0);
-    }
-    catch (e) {
-
-    }
-
-    for (let user of userDB){
-        if(user.username === username){
-            flag = true;
+    try {
+        const existingUser = await userCollection.findOne({ username });
+        if (existingUser) {
+            return res.render('signup', { errorMessage: "Username already exists" });
         }
-    }
-
-    if(flag){
-        res.render('signup', { errorMessage: "Username already exists" });
-    }
-
-    else{
-        userDB.push({ name, username, password, highest_score: 0 });
-        writeUserDB(userDB);
+        await userCollection.insertOne({ name, username, password, highestScore:0 });
         res.render('login', { errorMessage: null });
+    } catch (e) {
+        console.error("Error saving user to MongoDB:", e);
+        res.status(500).send("Failed to save DB");
     }
 });
 
@@ -175,8 +166,20 @@ router.post("/login/submit/userOptions", async (req, res) => {
 
 // This will show the result page
 router.post('/login/submit/userOptions/quiz', (req, res) => {
-
+    const userCollection = getCollection('users');
     const { questions, answerKey, userResponse } = req.body;
+    let correctResponse = JSON.parse(answerKey);
+    let quizAnswers = JSON.parse(userResponse);
+    let score = 0;
+
+     for(let i = 0; i < quizAnswers.length; i++){
+        if(quizAnswers[i] === correctResponse[i]){
+            score++;
+        }
+    }
+    let percentage = (score / quizAnswers.length)*100
+    
+    
     res.render('results', { 
         questions: JSON.parse(questions), 
         answers: JSON.parse(answerKey), 

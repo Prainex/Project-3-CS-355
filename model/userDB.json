@@ -40,5 +40,11 @@
     "username": "34",
     "password": "34",
     "highest_score": 0
+  },
+  {
+    "name": "wow",
+    "username": "wow",
+    "password": "wow",
+    "highest_score": 0
   }
 ]
