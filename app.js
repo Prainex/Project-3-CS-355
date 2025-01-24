@@ -8,7 +8,9 @@ const { connectToDB } = require('./model/db');
 
 var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
-var leaderboardRouter = require('./routes/leaderboard')
+var leaderboardRouter = require('./routes/leaderboard');
+
+
 
 
 var app = express();
@@ -36,6 +38,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/leaderboard', leaderboardRouter);
+
+const session = require('express-session');
+
+app.use(session({
+    secret: '12345', // Replace with a secure key
+    resave: false,
+    saveUninitialized: true
+}));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

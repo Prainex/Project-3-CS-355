@@ -40,45 +40,10 @@
     <label for="time-limit">Set time limit for each question (in seconds)</label>
     <input type="number" id="time-limit" name="time_limit" min="3" max="50" placeholder="Enter time between 3 and 50" required>
 
-    <div class="question-type">
-      <label for="choice">Choose a category:</label>
-      <select name="categoryOptions" id="option-box1">
-      </select>
-    </div>
-
-    <div class="difficulty-type">
-      <label for="choice">Choose a difficulty:</label>
-      <select name="difficultyOptions" id="option-box2"></select>
-    </div>
-
     <input type="submit" value="Submit">
   </form>
 
   <script>
-    const categories = <%- JSON.stringify(categories) %>;
-    const difficulties = <%- JSON.stringify(difficulties) %>;
-    const categoryId = <%- JSON.stringify(categoryId) %>;
-
-    let dropdown1 = document.getElementById("option-box1");
-    dropdown1.innerHTML = "";
-
-    let dropdown2 = document.getElementById("option-box2");
-    dropdown2.innerHTML = "";
-
-
-    categories.forEach((item, index) => {
-        let option = document.createElement('option');
-        option.value = categoryId[index];
-        option.textContent = item;
-        dropdown1.appendChild(option);
-    });
-
-    difficulties.forEach((item) =>{
-      let option = document.createElement('option');
-      option.value = item.toLowerCase();
-      option.textContent = item;
-      dropdown2.appendChild(option);
-    });
 
   </script>
   

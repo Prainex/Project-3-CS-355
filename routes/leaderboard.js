@@ -1,50 +1,27 @@
 var express = require('express');
 var router = express.Router();
-const fs = require("fs");
-const { getCollection } = require('../model/db');
-const axios = require('axios');
+const { getCollection } = require('../model/db'); // Assuming this function connects to MongoDB and retrieves collections
 
-
-
-
-// Path to the userDB.json file
-const userDBFileName = "./model/userDB.json";
-
-// Function to read the user database
-function readUserDB() {
-    let data = fs.readFileSync(userDBFileName, "utf-8");
-    return JSON.parse(data);
-}
-
+// Leaderboard route
 router.get('/', async (req, res) => {
-    try{
+    try {
+        // Get the 'users' collection from MongoDB
         const userCollection = getCollection('users');
+        
+        // Query all users, sort by highest_score in descending order, and convert to an array
         const sortedUsers = await userCollection
             .find({})
-            .sort({highest_score} -1)
+            .sort({ highestScore: -1 })
             .toArray();
 
+        // Render the leaderboard view with the sorted users
         res.render('leaderboard', { leaderboard: sortedUsers });
-    }
-    catch (err){
-        console.error("Error reading user database:", err);
+    } catch (err) {
+        console.error("Error retrieving user data from MongoDB:", err);
+
+        // Render the leaderboard view with an empty list and an error message
         res.render('leaderboard', { leaderboard: [], errorMessage: "Failed to load leaderboard data." });
     }
-})
-
-// // Leaderboard route
-// router.get('/', (req, res) => {
-//     try {
-//         // Read and sort the users by highest_score in descending order
-//         const users = readUserDB();
-//         const sortedUsers = users.sort((a, b) => b.highest_score - a.highest_score);
-
-//         // Render the leaderboard page with sorted data
-//         res.render('leaderboard', { leaderboard: sortedUsers });
-//     } catch (err) {
-//         console.error("Error reading user database:", err);
-//         res.render('leaderboard', { leaderboard: [], errorMessage: "Failed to load leaderboard data." });
-//     }
-// });
+});
 
 module.exports = router;

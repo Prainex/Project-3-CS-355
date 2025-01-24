@@ -37,7 +37,7 @@
                 align-content: right;
             }
 
-            a {
+            input {
                 /* border: 1px solid #8f94ad; */
                 padding: 10PX 50px;
                 
@@ -47,7 +47,7 @@
                 text-decoration: none;
                 color: black;
             }
-            a:hover{
+            input:hover{
                 background-color: #8f94ad;
 
             }
@@ -115,10 +115,10 @@
                 </tbody>
               </table>
 
-            <div class="links">
+            <form class="links" action="/auth/userOptions" method="post">
                     
-                        <a href="/auth/userOptions">PLAY GAME</a>
-            </div>
+                        <input type="submit" value="PLAY GAME">
+            </form>
                 
             
         </div>
