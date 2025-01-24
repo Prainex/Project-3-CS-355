@@ -1,0 +1,97 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+  }
+
+
+  body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ADB3D2;
+    font-family: "Irish Grover", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .container-1 {
+    padding: 20px 12%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    /* background-color: #CCD2AD;
+    color: white; */
+  }
+
+  .container-1 h1 {
+    margin: 0;
+    font-size: 24px;
+  }
+
+  .rules {
+    margin: 40px auto;
+    padding: 20px;
+    width: 50%;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  form {
+    margin: 20px auto;
+    padding: 20px;
+    width: 50%;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  form label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  form input[type="number"], form input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  form input[type="submit"] {
+    background-color: #CCD2AD;
+    color: white;
+    cursor: pointer;
+  }
+
+  form input[type="submit"]:hover {
+    background-color: #569aaf;
+  }
+
+  a{
+      color: white;
+  }
+
+#option-box1, #option-box2{
+  padding: 2px;
+  font-size: 15px;
+}
+
+#option-box1, #option-box2{
+  margin-bottom: 30px;
+}

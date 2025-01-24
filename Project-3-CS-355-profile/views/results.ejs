@@ -1,0 +1,73 @@
+
+<!-- This whole page is done by chat gpt, you can redo the page if you like or leeave it as it is because it works.
+     The style is located in the public folder under stylesheet
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Results</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Irish+Grover&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/stylesheets/result.css" />
+</head>
+<body>
+    <div class="user">
+        <form action="/auth/profile">
+            <button type="submit">
+                PROFILE
+            </button>
+            <input type="hidden" name="userScore" id="userScore" />
+        </form>
+        <a href="/auth/profile">PROFILE</a>
+    </div>
+    <div class="results-container">
+        <h1>Your Quiz Results</h1>
+        <div class="score">
+            <h2>Your Score: <span id="score"></span> / <span id="totalQuestions"></span></h2>
+            <h3>Percentage: <span id="percentage"></span>%</h3>
+        </div>
+
+        <div class="questions">
+            <% for(let i = 0; i < questions.length; i++) { %>
+                <div class="question-result">
+                    <h3><%= questions[i] %></h3>
+                    <p><strong>Correct Answer:</strong> <%= answers[i] %></p>
+                    <p><strong>Your Answer:</strong> <%= userResponse[i] === "noanswer" ? "No answer" : userResponse[i] %></p>
+                    <hr />
+                </div>
+            <% } %>
+        </div>
+
+        <div class="final-score">
+            <a href="/auth/login">Retake Quiz</a>
+        </div>
+        <div class="leaderboard">
+            <a href="/leaderboard">Leaderboard</a>
+        </div>
+    </div>
+
+    <script>
+        const userResponses = <%- JSON.stringify(userResponse) %>;
+        const correctAnswers = <%- JSON.stringify(answers) %>;
+        let score = 0;
+
+        userResponses.forEach((response, index) => {
+            if (response === correctAnswers[index]) {
+                score++;
+            }
+        });
+
+        const totalQuestions = userResponses.length;
+        const percentage = (score / totalQuestions) * 100;
+
+        document.getElementById('score').textContent = score;
+        document.getElementById('totalQuestions').textContent = totalQuestions;
+        document.getElementById('percentage').textContent = percentage.toFixed(2);
+    </script>
+</body>
+</html>
