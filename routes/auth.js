@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const fs = require("fs");
 const userDBFileName = "./model/userDB.json";
+const { getCollection } = require('../model/db');
 const axios = require('axios');
 var activeUser
 
@@ -45,24 +46,26 @@ async function getCategories(){
   }
 
 
+
 router.post("/login/submit", async (req, res) => {
     const {username, password} = req.body;
     const users = readUserDB();
 
-    
 
     let flag = false;
     let fullName;
 
     //finding user
+    // Check in the JSON file
     users.forEach((item) => {
-        if (item.username === username && item.password === password){
+        if (item.username === username && item.password === password) {
             flag = true;
             fullName = item.name;
             activeUser = item;
             
         }
     });
+
 
 
     console.log("The active user: ", activeUser);
@@ -81,32 +84,25 @@ router.post("/login/submit", async (req, res) => {
             games,
         });
     }else res.render('login', {errorMessage: "Invalid username or password"});
-    
 
-    
 });
 
 
-router.post("/signup/submit", (req, res) => {
-    let userDB = readUserDB();
-    let flag = false;
-    const { name, username, password} = req.body;
+router.post("/signup/submit", async (req, res) => {
+    const userCollection = getCollection('users');
+    const { name, username, password } = req.body;
 
 
     for (let user of userDB){
         if(user.username === username){
             flag = true;
+
         }
-    }
-
-    if(flag){
-        res.render('signup', { errorMessage: "Username already exists" });
-    }
-
-    else{
-        userDB.push({ name, username, password, highest_score: 0 });
-        writeUserDB(userDB);
+        await userCollection.insertOne({ name, username, password, highestScore:0 });
         res.render('login', { errorMessage: null });
+    } catch (e) {
+        console.error("Error saving user to MongoDB:", e);
+        res.status(500).send("Failed to save DB");
     }
 });
 
@@ -196,6 +192,7 @@ router.get('/home', async function(req, res) {
 
 router.get('/userOptions', function(req, res) {
     res.render('userOptions');
+
 });
 
 
