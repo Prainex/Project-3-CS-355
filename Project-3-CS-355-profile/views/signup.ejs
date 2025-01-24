@@ -1,0 +1,130 @@
+<!-- Someone worked on this page, not my page -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sign Up</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Irish+Grover&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    
+        <style>
+body {
+    display: flex;
+    height: 100vh;
+    margin: 0;  
+    justify-content: center;
+    align-items: center;
+    background-color: #ADB3D2;
+    font-family: "Irish Grover", serif;
+    font-weight: 400;
+    font-style: normal;}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    background-color: white;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    margin: 20px 20px;
+}
+
+h1 {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.form_header {
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 13px;
+}
+
+input {
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    height: 35px;
+    border: lightgrey 1px solid;
+}
+
+input[type="submit"] {
+    margin-top: 10px;
+    color: azure;
+    font-size: large;
+    height: 40px;
+    background-color: #6343e2;
+    border-radius: 20px;
+}
+
+input[type="submit"]:hover {
+    background-color: #301b87;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+
+.footnote {
+    font-size: 10px;
+    text-align: center;
+    color: rgb(158, 155, 155);
+}
+
+.error-message {
+    background-color: #ffcccc;
+    color: #b30000;
+    border: 1px solid #b30000;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <form method="POST" action="/auth/signup/submit" class="signup_form">
+                <div class="form_header">
+                    <h1>Sign Up</h1>
+                    <p>Already have an account? <a href="/auth/login">Sign in</a></p>
+                </div>
+
+                <label for="name">Name</label>
+                <input id="name" type="text" name="name" required>
+
+                <% if (errorMessage) { %>
+                    <p style="color: red;"><%= errorMessage %></p>
+                <% } %>
+                
+
+                <label for="username">Username</label>
+                <input id="username" type="text" name="username" required>
+
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password" required>
+
+                <input type="submit" value="Sign Up">
+                <p class="footnote">
+                    By signing up to create an account, you are accepting our terms of service and privacy policy.
+                </p>
+            </form>
+        </div>
+    </body>
+</html>
+

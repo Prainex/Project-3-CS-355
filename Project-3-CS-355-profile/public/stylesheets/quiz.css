@@ -1,0 +1,137 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Irish Grover", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body{
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  background-color: #ADB3D2;
+  font-family: "Irish Grover", serif;
+  font-weight: 400;
+  font-style: normal;
+  height: 100%;
+  width: 100%;
+}
+
+.header{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  /* background-color: rgb(33, 31, 31); */
+  color: black;
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 2.5%;
+  padding-bottom: 2.5%;
+  margin-bottom: 50px;
+  width: 100%;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  padding-top: 2.5%;
+  padding-bottom: 2.5%;
+  padding-left: 6%;
+  padding-right: 6%;
+  border-radius: 3px;
+  color: white;
+  width: 60%;
+  margin-bottom: 80px;
+}
+
+.container > h1{
+  margin-bottom: 30px;
+  font-weight: 100;
+  font-size: 28px;
+}
+
+.option{
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+  font-size: 20px;
+  background-color: #8f94ad;
+  padding-left: 3%;
+  padding-right: 3%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  border-radius: 5px;
+}
+
+.option:hover{
+  background-color: #CCD2AD;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+form > button{
+  height: 60px;
+  width: 150px;
+  background-color: #CCD2AD;
+  color: white;
+  font-size: 25px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 5px;
+  font-family: "Irish Grover", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+form > button:hover {
+  background-color: #8f94ad;
+  color: beige;
+}
+
+
+.timer{
+  font-size: 48px;
+  color: orangered;
+  font-weight: bold;
+  padding: 20px;
+  border: 2px solid orangered;
+  border-radius: 6px;
+  background-color: white;
+  width: 150px;
+  text-align: center;
+}
+a{
+  text-decoration: none;
+}
+
+.container-2{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 200px;
+}
+
+#result-btn{
+  padding: 20px;
+  color: black;
+  background-color: #CCD2AD;
+  border-radius: 15px;
+  border: none;
+  margin: 20px;
+}
+
+#result-btn:hover{
+  cursor: pointer;
+  background-color: #569aaf;
+}

@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 const fs = require("fs");
 const userDBFileName = "./model/userDB.json";
-const { getCollection } = require('../model/db');
 const axios = require('axios');
 var activeUser
 
@@ -46,26 +45,24 @@ async function getCategories(){
   }
 
 
-
 router.post("/login/submit", async (req, res) => {
     const {username, password} = req.body;
     const users = readUserDB();
 
+    
 
     let flag = false;
     let fullName;
 
     //finding user
-    // Check in the JSON file
     users.forEach((item) => {
-        if (item.username === username && item.password === password) {
+        if (item.username === username && item.password === password){
             flag = true;
             fullName = item.name;
             activeUser = item;
             
         }
     });
-
 
 
     console.log("The active user: ", activeUser);
@@ -84,40 +81,47 @@ router.post("/login/submit", async (req, res) => {
             games,
         });
     }else res.render('login', {errorMessage: "Invalid username or password"});
+    
 
+    
 });
 
 
-router.post("/signup/submit", async (req, res) => {
-    const userCollection = getCollection('users');
-    const { name, username, password } = req.body;
+router.post("/signup/submit", (req, res) => {
+    let userDB = readUserDB();
+    let flag = false;
+    const { name, username, password} = req.body;
 
 
     for (let user of userDB){
         if(user.username === username){
             flag = true;
-
         }
-        await userCollection.insertOne({ name, username, password, highestScore:0 });
+    }
+
+    if(flag){
+        res.render('signup', { errorMessage: "Username already exists" });
+    }
+
+    else{
+        userDB.push({ name, username, password, highest_score: 0 });
+        writeUserDB(userDB);
         res.render('login', { errorMessage: null });
-    } catch (e) {
-        console.error("Error saving user to MongoDB:", e);
-        res.status(500).send("Failed to save DB");
     }
 });
 
 
-async function fetchApiData(question_amount, categories, difficulty){
-    let quiz_questions = `https://opentdb.com/api.php?amount=${question_amount}&category=${categories}&difficulty=${difficulty}&type=multiple`;
-    try{
-      let response = await axios.get(quiz_questions);
-      response = response.data;
-      return response;
-    }
-    catch(error){
-      console.log("Error fetching data ", error.message);
+async function fetchApiData(question_amount) {
+    let quiz_questions = `https://opentdb.com/api.php?amount=${question_amount}&type=multiple`;
+    try {
+        let response = await axios.get(quiz_questions);
+        response = response.data;
+        return response;
+    } catch (error) {
+        console.log("Error fetching data ", error.message);
     }
 }
+
 
 function createQuestionObj(data) {
     const questions = [];
@@ -143,26 +147,24 @@ function createQuestionObj(data) {
   
     return questions;
   }
+
   
-//makes the api calls to get question categories and other quiz options
 router.post("/login/submit/userOptions", async (req, res) => {
     
 
     const data = {
         questionAmount: req.body.num_questions,
         timeLimit: req.body.time_limit,
-        categories: req.body.categoryOptions,
     }
-    let apiData = await fetchApiData(data.questionAmount, data.categories, data.difficulty);
+
+    let apiData = await fetchApiData(data.questionAmount);
     let selectedQuestion = createQuestionObj(apiData);
     console.log(selectedQuestion);
     res.render("quiz", 
         {
             questions: selectedQuestion, 
             time_limit: data.timeLimit,
-            activeUser
         });
-        console.log("\n\nQUIZ OPTIONS: This is the current highest score: ", activeUser.highest_score);
 });
 
 
@@ -190,12 +192,8 @@ router.get('/home', async function(req, res) {
 });
 
 
-router.get('/userOptions', function(req, res) {
-    res.render('userOptions');
-
+router.post('/userOptions', function(req, res) {
+    res.render("userOptions", {title: activeUser.name});
 });
-
-
-
 
 module.exports = router;

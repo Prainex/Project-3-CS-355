@@ -1,0 +1,172 @@
+ <!-- Changes made in this entire page -->
+ 
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Quiz</title>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Irish+Grover&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    
+     <link rel="stylesheet" href="/stylesheets/quiz.css" />
+ </head>
+ <body>
+     <div class="header">
+         <h1>Question 1</h1>
+         <div class="timer">30</div>
+     </div>
+ 
+     <div class="container">
+         <h1>This is a question?</h1>
+         <form>
+             <label class="option">
+                 <input type="radio" id="optionA" name="answer" value="A">
+                 <p>Option A</p>
+             </label>
+             <label class="option">
+                 <input type="radio" id="optionB" name="answer" value="B">
+                 <p>Option B</p>
+             </label>
+             <label class="option">
+                 <input type="radio" id="optionC" name="answer" value="C">
+                 <p>Option C</p>
+             </label>
+             <label class="option">
+                 <input type="radio" id="optionD" name="answer" value="D">
+                 <p>Option D</p>
+             </label>
+             <button id="next-button" type="button">Next</button>
+         </form>
+     </div>
+ 
+     <div class="container-2" style="display: none;">
+         <h1>Thanks for taking the quiz!</h1>
+         <form id="result-form" action="/auth/login/submit/userOptions/quiz" method="POST">
+             <input type="hidden" name="questions" id="questions-field" />
+             <input type="hidden" name="answerKey" id="answerKey-field" />
+             <input type="hidden" name="userResponse" id="userResponse-field" />
+             <input id="result-btn" type="submit" value="View Result" />
+         </form>
+     </div>
+ 
+     <script>
+
+        // Receive the question and the time limit from the server
+         const questions = <%- JSON.stringify(questions) %>;
+         const time_limit = <%- time_limit %>;
+ 
+         let actual_answers = []; 
+         let questionStr = []; 
+ 
+         // Stores the correct answer and question from the object
+         questions.forEach((item) => {
+             questionStr.push(item.question);
+             let str = item.answer;
+             actual_answers.push(item[str]);
+         });
+ 
+         let user_response = [];
+ 
+         const questionElement = document.querySelector('.container > h1');
+         const options = document.querySelectorAll('.option input');
+         const nextButton = document.getElementById('next-button');
+         const headerQuestion = document.querySelector('.header > h1');
+         const timerElement = document.querySelector('.timer');
+         const resultForm = document.getElementById('result-form');
+         const resultBtn = document.getElementById('result-btn');
+         document.querySelector('.container-2').style.display = 'none';
+ 
+         let currentQuestionIndex = 0;
+         let timeLeft = time_limit;
+         let timerInterval;
+ 
+         function updateTimerDisplay() {
+             timerElement.textContent = timeLeft;
+         }
+ 
+         function startTimer() {
+             timeLeft = time_limit;
+             updateTimerDisplay();
+ 
+             timerInterval = setInterval(() => {
+                 timeLeft--;
+ 
+                 if (timeLeft <= 0) {
+                     clearInterval(timerInterval);
+                     timerElement.textContent = "0";
+                     nextQuestion();
+                 } else {
+                     updateTimerDisplay();
+                 }
+             }, 1000);
+         }
+ 
+         function recordResponse() {
+             let selectedOption = null;
+ 
+             options.forEach((option) => {
+                 if (option.checked) {
+                     selectedOption = option.value;
+                 }
+             });
+ 
+             if (selectedOption === null) {
+                 user_response.push("noanswer");
+             } else {
+                 user_response.push(selectedOption);
+             }
+         }
+ 
+         function loadQuestion() {
+             let question = questions[currentQuestionIndex];
+             questionElement.textContent = question.question;
+             headerQuestion.textContent = `Question ${currentQuestionIndex + 1}`;
+ 
+             options[0].nextElementSibling.textContent = question.A;
+             options[1].nextElementSibling.textContent = question.B;
+             options[2].nextElementSibling.textContent = question.C;
+             options[3].nextElementSibling.textContent = question.D;
+ 
+             options.forEach((option) => {
+                 option.checked = false;
+             });
+ 
+             startTimer();
+         }
+ 
+         function nextQuestion() {
+             recordResponse();
+ 
+             if (currentQuestionIndex < questions.length - 1) {
+                 currentQuestionIndex++;
+                 loadQuestion();
+             } else {
+                 clearInterval(timerInterval);
+                 document.querySelector('.container').style.display = 'none';
+                 document.querySelector('.container-2').style.display = 'flex';
+ 
+                 for (let i = 0; i < user_response.length; i++) {
+                     if (user_response[i] !== "noanswer") {
+                         user_response[i] = questions[i][user_response[i]];
+                     }
+                 }
+ 
+                 document.getElementById('questions-field').value = JSON.stringify(questionStr);
+                 document.getElementById('answerKey-field').value = JSON.stringify(actual_answers);
+                 document.getElementById('userResponse-field').value = JSON.stringify(user_response);
+             }
+         }
+ 
+         nextButton.addEventListener('click', (e) => {
+             e.preventDefault();
+             clearInterval(timerInterval);
+             nextQuestion();
+         });
+ 
+         loadQuestion();
+     </script>
+ </body>
+ </html>
+ 
